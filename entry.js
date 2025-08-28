@@ -1,34 +1,22 @@
-import express from 'express'
-import mongoose from 'mongoose'
+import path from 'path';
+import express from 'express';
+import mongoose from 'mongoose';
+import router from './PostModule/Routers/PostRouter.js';
+import fileUpload from 'express-fileupload';
+import { fileURLToPath } from 'url';
 
-import Post from './schemas/Post.js'
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PORT = process.env.PORT || 5000;
-const DB_URL = 'mongodb+srv://semka:123@express-cluster.muwmi16.mongodb.net/?retryWrites=true&w=majority&appName=express-cluster'
+const DB_URL = 'mongodb+srv://semka:123@express-cluster.muwmi16.mongodb.net/?retryWrites=true&w=majority&appName=express-cluster';
 
 const app = express();
 
+app.use("/picture", express.static(path.join(__dirname, 'picture_storage')));
+app.use(fileUpload({}));
 app.use(express.json());
-
-app.get('/users', (req, res) => {
-    res.status(200).json("Server works");
-})
-
-app.post('/post/create', async (req, res) => {
-    try {
-        const {author, title, content, picture} = req.body;
-        const post = await Post.create({author, title, content, picture});
-        res.status(200).json({
-            message: "Post successfully created", 
-            post: post
-        });
-    } catch(error) {
-        res.status(500).json({
-            message: "Failed to create post",
-            error: error.message
-        });
-    }
-})
+app.use('/api', router);
 
 async function startApp() {
     try {
