@@ -1,9 +1,7 @@
 import PostService from '../Services/PostService.js';
 
 class PostController {
-	// Create a new post
-	// POST /posts
-	async POST_posts(req, res) {
+	async create(req, res) {
 		try {
 		  	const post = await PostService.create(req.body, req.files?.picture);
 		  	res.status(200).json({
@@ -17,9 +15,7 @@ class PostController {
 		  	});
 	 	}
 	}
-	// Get all posts
-	// GET /posts
-	async GET_posts(req, res) { 
+	async getAll(req, res) { 
 		try {
 			const posts = await PostService.getAll();
 		  	res.status(200).json({
@@ -34,9 +30,7 @@ class PostController {
 		  	});
 	 	}
 	}
-	// Get a post by id
-	// GET /posts/:id
-	async GET_posts_id(req, res) {
+	async getOne(req, res) {
 		try {
 			const {id} = req.params;
 			if(!id) {
@@ -56,9 +50,7 @@ class PostController {
 		  	});
 	 	}
 	 }
-	// Update a post
-	// PUT /posts
-	async PUT_posts(req, res) {
+	async update(req, res) {
 		try {
 			const post = req.body;
 			if(!post._id) {
@@ -78,9 +70,7 @@ class PostController {
 		  	});
 	 	}
 	 }
-	// Delete a post by id
-	// DELETE /posts/:id
-	async DELETE_posts_id(req, res) { 
+	async delete(req, res) { 
 		try {
 			const {id} = req.params;
 			if(!id) {
